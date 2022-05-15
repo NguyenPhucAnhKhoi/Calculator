@@ -9,7 +9,7 @@
 > 
 > • Division: "number 1 / number 2" ; Ex: "10 / 2" ➙ 5
 > 
-> • Division remainder: "number1 % number2" ; Ex: "7 % 2" ➙ 1
+> • Division Remainder: "number1 % number2" ; Ex: "7 % 2" ➙ 1
 > 
 > • Exponential: "number^exponent" ; Ex: "2^3" ➙ 8
 > 
