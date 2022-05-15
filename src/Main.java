@@ -63,11 +63,11 @@ public class Main {
     }
     private static double parsesecond (String s) {
         s = s.replaceAll(" ", "");
-        if (s.contains("*") || s.contains("/")) {
+        if (s.contains("*") || s.contains("/") || s.contains("%")) {
             List<Integer> terms = new ArrayList<>();
             double result = 0;
             for (int i = 0; i < s.length(); i++) {
-                if (s.charAt(i) == '*' || s.charAt(i) == '/') {
+                if (s.charAt(i) == '*' || s.charAt(i) == '/' || s.charAt(i) == '%') {
                     terms.add(i);
                 }
             }
@@ -79,14 +79,17 @@ public class Main {
                     else b = Double.parseDouble(calculator(s.substring(terms.get(0) + 1, terms.get(1)), -1));
                     if (s.charAt(terms.get(i)) == '*') result = a * b;
                     else if (s.charAt(terms.get(i)) == '/') result = a / b;
+                    else if (s.charAt(terms.get(i)) == '%') result = a % b;
                 } else if (i == terms.size() - 1) {
                     double b = Double.parseDouble(calculator(s.substring(terms.get(i) + 1), -1));
                     if (s.charAt(terms.get(i)) == '*') result *= b;
                     else if (s.charAt(terms.get(i)) == '/') result /= b;
+                    else if (s.charAt(terms.get(i)) == '%') result %= b;
                 } else {
                     double b = Double.parseDouble(calculator(s.substring(terms.get(i) + 1, terms.get(i + 1)), -1));
                     if (s.charAt(terms.get(i)) == '*') result *= b;
                     else if (s.charAt(terms.get(i)) == '/') result /= b;
+                    else if (s.charAt(terms.get(i)) == '%') result %= b;
                 }
             }
             return result;
@@ -124,12 +127,11 @@ public class Main {
         return result;
     }
     private static String calculator(String Expression, int Demical) {
-        Expression = Expression.replaceAll(" ", "");
         if (Demical <= -1) {
             if (!Expression.contains("(") && !Expression.contains(")")) {
                 if (Expression.contains("^") || Expression.contains("@")) {
                     return String.valueOf(parsefirst(Expression));
-                } else if (Expression.contains("*") || Expression.contains("/")){
+                } else if (Expression.contains("*") || Expression.contains("/") || Expression.contains("%")){
                     return String.valueOf(parsesecond(Expression));
                 } else if (Expression.contains("+") || Expression.contains("-")) {
                     return String.valueOf(parsethird(Expression));
@@ -137,6 +139,7 @@ public class Main {
                     return Expression;
                 }
             } else {
+                Expression = Expression.replaceAll(" ", "");
                 List<Integer> open = new ArrayList<>();
                 List<Integer> close = new ArrayList<>();
                 List<String> es = new ArrayList<>();
@@ -163,7 +166,7 @@ public class Main {
             if (!Expression.contains("(") && !Expression.contains(")")) {
                 if (Expression.contains("^") || Expression.contains("@")) {
                     return String.format("%." + Demical + "f", parsefirst(Expression));
-                } else if (Expression.contains("*") || Expression.contains("/")){
+                } else if (Expression.contains("*") || Expression.contains("/") || Expression.contains("%")){
                     return String.format("%." + Demical + "f", parsesecond(Expression));
                 } else if (Expression.contains("+") || Expression.contains("-")) {
                     return String.format("%." + Demical + "f", parsethird(Expression));
@@ -171,6 +174,7 @@ public class Main {
                     return Expression;
                 }
             } else {
+                Expression = Expression.replaceAll(" ", "");
                 List<Integer> open = new ArrayList<>();
                 List<Integer> close = new ArrayList<>();
                 List<String> es = new ArrayList<>();
@@ -196,3 +200,4 @@ public class Main {
         }
     }
 }
+
