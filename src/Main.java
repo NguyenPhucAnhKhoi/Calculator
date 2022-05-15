@@ -8,10 +8,7 @@ public class Main {
         boolean is = true;
         List<Character> chars = new ArrayList<>();
         for (int i = 0; i < s.length(); i++) {
-            chars.add(s.charAt(i));
-        }
-        for (Character a : chars) {
-            if (String.valueOf(a).matches("[0-9+\\-*/%^@{}()]")) continue;
+            if (String.valueOf(s.charAt(i)).matches("[0-9+\\-*/%^@{}()]")) continue;
             else is = false;
         }
         return is;
