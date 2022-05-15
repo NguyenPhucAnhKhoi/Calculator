@@ -279,7 +279,4 @@ public class Main {
             return "Couldn't find any expressions";
         }
     }
-    public static void main(String[] args) {
-        System.out.print(calculator("1 + @{2^4}", 0));
-    }
 }
