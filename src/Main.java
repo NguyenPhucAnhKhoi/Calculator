@@ -8,11 +8,7 @@ public class Main {
         boolean is = true;
         List<Character> chars = new ArrayList<>();
         for (int i = 0; i < s.length(); i++) {
-            chars.add(s.charAt(i));
-        }
-        for (Character a : chars) {
-            if (String.valueOf(a).matches("[0-9+\\-*/%^@{}()]")) continue;
-            else is = false;
+            if (!String.valueOf(s.charAt(i)).matches("[0-9+\\-*/%^@{}()]")) is = false;
         }
         return is;
     }
@@ -144,14 +140,47 @@ public class Main {
         if (isExpresstion(Expression)) {
             if (Demical <= -1) {
                 if (!Expression.contains("(") && !Expression.contains(")")) {
-                    if (Expression.contains("^") || Expression.contains("@")) {
-                        return String.valueOf(parsefirst(Expression));
-                    } else if (Expression.contains("*") || Expression.contains("/") || Expression.contains("%")){
-                        return String.valueOf(parsesecond(Expression));
-                    } else if (Expression.contains("+") || Expression.contains("-")) {
-                        return String.valueOf(parsethird(Expression));
+                    if (Expression.startsWith("@{")) {
+                        if (Expression.contains("^") || Expression.contains("@{")) {
+                            return String.valueOf(parsefirst(Expression));
+                        } else if (Expression.contains("*") || Expression.contains("/") || Expression.contains("%")){
+                            return String.valueOf(parsesecond(Expression));
+                        } else if (Expression.contains("+") || Expression.contains("-")) {
+                            return String.valueOf(parsethird(Expression));
+                        } else {
+                            return Expression;
+                        }
                     } else {
-                        return Expression;
+                        Expression = Expression.replaceAll(" ", "");
+                        List<Integer> open = new ArrayList<>();
+                        List<Integer> close = new ArrayList<>();
+                        List<String> es = new ArrayList<>();
+                        for (int i = 0; i < Expression.length(); i++) {
+                            if (Expression.charAt(i) == '{') open.add(i);
+                        }
+                        for (int i = Expression.length() - 1; i >= 0; i--) {
+                            if (Expression.charAt(i) == '}') close.add(i);
+                        }
+                        if (open.size() != close.size()) return Expression;
+                        else {
+                            for (int i = 0; i < open.size(); i++) {
+                                if (!Expression.substring(open.get(i) + 1, close.get(i)).contains("@{") && !Expression.substring(open.get(i) + 1, close.get(i)).contains("}"))
+                                    es.add(Expression.substring(open.get(i) + 1, close.get(i)));
+                                else es.add(calculator(Expression.substring(open.get(i) + 1, close.get(i)), Demical));
+                            }
+                        }
+                        for (String e : es) {
+                            Expression = Expression.replace("@{" + e + "}", calculator(e, Demical));
+                        }
+                        if (Expression.contains("+") || Expression.contains("-")) {
+                            return String.valueOf(parsethird(Expression));
+                        } else if (Expression.contains("*") || Expression.contains("/") || Expression.contains("%")){
+                            return String.valueOf(parsesecond(Expression));
+                        } else if (Expression.contains("^") || Expression.contains("@{")) {
+                            return String.valueOf(parsefirst(Expression));
+                        } else {
+                            return Expression;
+                        }
                     }
                 } else {
                     Expression = Expression.replaceAll(" ", "");
@@ -173,20 +202,53 @@ public class Main {
                         }
                     }
                     for (String e : es) {
-                        Expression = Expression.replace("(" + e + ")", calculator(e, Demical));
+                        Expression = Expression.replace("(" + e + ")", calculator("@{" + e + "}", Demical));
                     }
                     return calculator(Expression, Demical);
                 }
             } else {
                 if (!Expression.contains("(") && !Expression.contains(")")) {
-                    if (Expression.contains("^") || Expression.contains("@")) {
-                        return String.format("%." + Demical + "f", parsefirst(Expression));
-                    } else if (Expression.contains("*") || Expression.contains("/") || Expression.contains("%")){
-                        return String.format("%." + Demical + "f", parsesecond(Expression));
-                    } else if (Expression.contains("+") || Expression.contains("-")) {
-                        return String.format("%." + Demical + "f", parsethird(Expression));
+                    if (Expression.startsWith("@{")) {
+                        if (Expression.contains("^") || Expression.contains("@{")) {
+                            return String.format("%." + Demical + "f", parsefirst(Expression));
+                        } else if (Expression.contains("*") || Expression.contains("/") || Expression.contains("%")){
+                            return String.format("%." + Demical + "f", parsesecond(Expression));
+                        } else if (Expression.contains("+") || Expression.contains("-")) {
+                            return String.format("%." + Demical + "f", parsethird(Expression));
+                        } else {
+                            return Expression;
+                        }
                     } else {
-                        return Expression;
+                        Expression = Expression.replaceAll(" ", "");
+                        List<Integer> open = new ArrayList<>();
+                        List<Integer> close = new ArrayList<>();
+                        List<String> es = new ArrayList<>();
+                        for (int i = 0; i < Expression.length(); i++) {
+                            if (Expression.charAt(i) == '{') open.add(i);
+                        }
+                        for (int i = Expression.length() - 1; i >= 0; i--) {
+                            if (Expression.charAt(i) == '}') close.add(i);
+                        }
+                        if (open.size() != close.size()) return Expression;
+                        else {
+                            for (int i = 0; i < open.size(); i++) {
+                                if (!Expression.substring(open.get(i) + 1, close.get(i)).contains("@{") && !Expression.substring(open.get(i) + 1, close.get(i)).contains("}"))
+                                    es.add(Expression.substring(open.get(i) + 1, close.get(i)));
+                                else es.add(calculator(Expression.substring(open.get(i) + 1, close.get(i)), Demical));
+                            }
+                        }
+                        for (String e : es) {
+                            Expression = Expression.replace("@{" + e + "}", calculator("@{" + e + "}", Demical));
+                        }
+                        if (Expression.contains("+") || Expression.contains("-")) {
+                            return String.format("%." + Demical + "f", parsethird(Expression));
+                        } else if (Expression.contains("*") || Expression.contains("/") || Expression.contains("%")){
+                            return String.format("%." + Demical + "f", parsesecond(Expression));
+                        } else if (Expression.contains("^") || Expression.contains("@{")) {
+                            return String.format("%." + Demical + "f", parsefirst(Expression));
+                        } else {
+                            return Expression;
+                        }
                     }
                 } else {
                     Expression = Expression.replaceAll(" ", "");
@@ -216,5 +278,8 @@ public class Main {
         } else {
             return "Couldn't find any expressions";
         }
+    }
+    public static void main(String[] args) {
+        System.out.print(calculator("1 + @{2^4}", 0));
     }
 }
