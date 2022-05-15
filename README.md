@@ -15,6 +15,6 @@
 > 
 > • Square Root: "@{number}" ; Ex: "@{16}" ➙ 4
 # Advanced Expressions
-> ➤ Priority Expression: exponential and square root go first, then miltiplication and division, final summation and subtraction.
+> ➤ Priority Expression: exponential and square root go first; then miltiplication, division and division remainder; final summation and subtraction.
 > 
 > ➤ Expressions Contains Bracket: "(number1 + number2) * number2" the expressions in bracket will go first then comes the general expression ; Ex: "(1 + 2) * 4" ➙ 12
