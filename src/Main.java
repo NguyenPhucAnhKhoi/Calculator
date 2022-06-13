@@ -1,6 +1,8 @@
 // This is the text to copy, not the actual source code !!!
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
     private static boolean isExpresstion(String s) {
@@ -184,25 +186,11 @@ public class Main {
                     }
                 } else {
                     Expression = Expression.replaceAll(" ", "");
-                    List<Integer> open = new ArrayList<>();
-                    List<Integer> close = new ArrayList<>();
-                    List<String> es = new ArrayList<>();
-                    for (int i = 0; i < Expression.length(); i++) {
-                        if (Expression.charAt(i) == '(') open.add(i);
-                    }
-                    for (int i = Expression.length() - 1; i >= 0; i--) {
-                        if (Expression.charAt(i) == ')') close.add(i);
-                    }
-                    if (open.size() != close.size()) return Expression;
-                    else {
-                        for (int i = 0; i < open.size(); i++) {
-                            if (!Expression.substring(open.get(i) + 1, close.get(i)).contains("(") && !Expression.substring(open.get(i) + 1, close.get(i)).contains(")"))
-                                es.add(Expression.substring(open.get(i) + 1, close.get(i)));
-                            else es.add(calculator(Expression.substring(open.get(i) + 1, close.get(i)), Demical));
-                        }
-                    }
-                    for (String e : es) {
-                        Expression = Expression.replace("(" + e + ")", calculator("@{" + e + "}", Demical));
+                    final String regex = "([(]{1})([\\d\\s+\\-*\\/%^@{}]+)([)]{1})";
+                    final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+                    final Matcher matcher = pattern.matcher(Expression);
+                    if (matcher.find()) {
+                        Expression = Expression.replaceFirst(regex, calculator(matcher.group(0).replaceAll("\\(", "").replaceAll("\\)", ""), Demical));
                     }
                     return calculator(Expression, Demical);
                 }
@@ -252,25 +240,11 @@ public class Main {
                     }
                 } else {
                     Expression = Expression.replaceAll(" ", "");
-                    List<Integer> open = new ArrayList<>();
-                    List<Integer> close = new ArrayList<>();
-                    List<String> es = new ArrayList<>();
-                    for (int i = 0; i < Expression.length(); i++) {
-                        if (Expression.charAt(i) == '(') open.add(i);
-                    }
-                    for (int i = Expression.length() - 1; i >= 0; i--) {
-                        if (Expression.charAt(i) == ')') close.add(i);
-                    }
-                    if (open.size() != close.size()) return Expression;
-                    else {
-                        for (int i = 0; i < open.size(); i++) {
-                            if (!Expression.substring(open.get(i) + 1, close.get(i)).contains("(") && !Expression.substring(open.get(i) + 1, close.get(i)).contains(")"))
-                                es.add(Expression.substring(open.get(i) + 1, close.get(i)));
-                            else es.add(calculator(Expression.substring(open.get(i) + 1, close.get(i)), Demical));
-                        }
-                    }
-                    for (String e : es) {
-                        Expression = Expression.replace("(" + e + ")", calculator(e, Demical));
+                    final String regex = "([(]{1})([\\d\\s+\\-*\\/%^@{}]+)([)]{1})";
+                    final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+                    final Matcher matcher = pattern.matcher(Expression);
+                    if (matcher.find()) {
+                        Expression = Expression.replaceFirst(regex, calculator(matcher.group(0).replaceAll("\\(", "").replaceAll("\\)", ""), Demical));
                     }
                     return calculator(Expression, Demical);
                 }
@@ -278,8 +252,5 @@ public class Main {
         } else {
             return "Couldn't find any expressions";
         }
-    }
-    public static void main(String[] args) {
-        System.out.print(calculator("1 + @{2^4}", 0));
     }
 }
