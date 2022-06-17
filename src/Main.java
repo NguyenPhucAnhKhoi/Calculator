@@ -166,7 +166,7 @@ public class Main {
         }
         return result;
     }
-    private static String calculator(String Expression, int Demical) {
+    public static String calculator(String Expression, int Demical) {
         if (isExpresstion(Expression)) {
             final boolean parseSecond = !Expression.contains("*") && !Expression.contains("/") && !Expression.contains("%");
             final boolean parseFirst = Expression.contains("^") || Expression.contains("@{") || Expression.contains("#");
@@ -254,8 +254,5 @@ public class Main {
         } else {
             return "Couldn't find any expressions";
         }
-    }
-    public static void main(String[] args) {
-        System.out.println(calculator("@{40 # 10}", 0));
     }
 }
