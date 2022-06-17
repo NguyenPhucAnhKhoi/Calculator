@@ -31,6 +31,9 @@ Maven:
 	<id>jitpack.io</id>
   <url>https://jitpack.io</url>
 </repository>
+```
+>
+```
 <dependency>
   <groupId>com.github.NguyenPhucAnhKhoi</groupId>
 	<artifactId>Calculator</artifactId>
