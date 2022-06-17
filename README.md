@@ -36,7 +36,7 @@ Maven:
 ```
 <dependency>
   <groupId>com.github.NguyenPhucAnhKhoi</groupId>
-	<artifactId>Calculator</artifactId>
-	<version>Tag</version>
+  <artifactId>Calculator</artifactId>
+  <version>Tag</version>
 </dependency>
 ```
